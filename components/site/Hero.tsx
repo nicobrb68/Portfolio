@@ -6,6 +6,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import { profile } from "@/data/projects";
 import photo from "@/public/nicolas.jpg";
+import LightPillar from "@/components/ui/light-pillar";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -83,16 +84,27 @@ export default function Hero() {
       id="top"
       className="relative min-h-screen w-full flex flex-col justify-between pt-20 pb-8 overflow-hidden bg-paper"
     >
-      {/* Halo violet d'ambiance */}
+      {/* Faisceau lumineux diagonal en arrière-plan */}
       <div 
         aria-hidden 
-        className="pointer-events-none absolute -top-32 left-1/4 w-[85vw] h-[450px] bg-gradient-to-tr from-purple-700/20 via-violet-600/15 to-transparent blur-[140px] rounded-full"
-      />
+        className="pointer-events-none absolute inset-0 z-0 h-full w-full overflow-hidden"
+      >
+           
+        <LightPillar
+          topColor="#c084fc"
+          bottomColor="#4c1d95"
+          intensity={0.17}
+          rotationSpeed={0.4}
+          pillarWidth={4.5}
+          pillarRotation={25}
+          interactive={true}
+        />
+      </div>
 
-      <div className="w-full flex-1 flex flex-col justify-between">
+      <div className="w-full flex-1 flex flex-col justify-between relative z-10">
         
         {/* Bandeau statut haut */}
-        <div data-fade className="w-full flex items-center justify-between px-6 md:px-12 py-4 font-mono text-xs uppercase tracking-wider text-ink/70 border-b border-border">
+        <div data-fade className="w-full flex items-center justify-between px-6 md:px-12 py-4 font-mono text-xs uppercase tracking-wider text-ink/70 border-b border-border bg-paper/40 backdrop-blur-[2px]">
           <div className="flex items-center gap-3">
             <span className="relative flex h-2.5 w-2.5">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
@@ -170,7 +182,7 @@ export default function Hero() {
         </div>
 
         {/* Bandeau d'alternance & actions */}
-        <div data-fade className="w-full border-t border-border grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-border">
+        <div data-fade className="w-full border-t border-border grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-border bg-paper/60 backdrop-blur-[2px]">
           <div className="lg:col-span-6 px-6 md:px-12 py-6 flex flex-col justify-center gap-1">
             <span className="font-mono text-xs font-bold uppercase tracking-wider text-purple-400">
               Alternance 24 mois · Dès {profile.alternance.start}
@@ -211,7 +223,7 @@ export default function Hero() {
       </div>
 
       {/* Marquee défilant */}
-      <div data-fade className="w-full pt-6 border-t border-border select-none pointer-events-none">
+      <div data-fade className="w-full pt-6 border-t border-border select-none pointer-events-none relative z-10">
         <div className="w-full overflow-hidden py-3 bg-purple-950/10 [mask-image:linear-gradient(to_right,transparent,black_5%,black_95%,transparent)]">
           <div className="animate-marquee gap-8 items-center">
             {[...marqueeItems, ...marqueeItems].map((item, idx) => (
