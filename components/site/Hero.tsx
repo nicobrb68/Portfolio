@@ -1,6 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useRef } from "react";
+import { useLayoutEffect, useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
@@ -30,6 +30,15 @@ export default function Hero() {
   const name1Ref = useRef<HTMLSpanElement>(null);
   const name2Ref = useRef<HTMLSpanElement>(null);
   const photoRef = useRef<HTMLDivElement>(null);
+
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   useLayoutEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -84,20 +93,19 @@ export default function Hero() {
       id="top"
       className="relative min-h-screen w-full flex flex-col justify-between pt-20 pb-8 overflow-hidden bg-paper"
     >
-      {/* Faisceau lumineux diagonal en arrière-plan */}
+      {/* Faisceau lumineux */}
       <div 
         aria-hidden 
-        className="pointer-events-none absolute inset-0 z-0 h-full w-full overflow-hidden"
+        className="pointer-events-none absolute inset-0 w-full h-full min-h-screen z-0 overflow-hidden"
       >
-           
         <LightPillar
           topColor="#c084fc"
           bottomColor="#4c1d95"
-          intensity={0.16}
+          intensity={isMobile ? 0.35 : 0.16}
           rotationSpeed={0.4}
-          pillarWidth={4.5}
-          pillarRotation={25}
-          interactive={true}
+          pillarWidth={isMobile ? 2.6 : 4.5}
+          pillarRotation={isMobile ? 10 : 25}
+          interactive={!isMobile}
         />
       </div>
 

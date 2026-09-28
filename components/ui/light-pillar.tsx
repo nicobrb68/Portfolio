@@ -98,7 +98,7 @@ export default function LightPillar({
         float xDist = abs(uv.x) / (uPillarWidth * 0.25);
         float beam = exp(-xDist * xDist * 1.5);
 
-        // 2. Génération de multiples filaments fins (style aurore / threads)
+        // 2. Génération de multiples filaments fins (aurore / threads)
         float threads = 0.0;
         threads += sin(uv.x * 65.0 + uTime * 2.0 + sin(uv.y * 20.0)) * 0.35;
         threads += sin(uv.x * 130.0 - uTime * 3.5 + cos(uv.y * 35.0)) * 0.25;
@@ -112,9 +112,12 @@ export default function LightPillar({
         float heightFactor = clamp(uv.y * 1.2 + 0.5, 0.0, 1.0);
         vec3 color = mix(uBottomColor, uTopColor, heightFactor);
 
-        float fade = smoothstep(1.2, 0.3, length(uv));
+        // Gestion du fondu : adapté au ratio écran (étendu en hauteur si portrait)
+        bool isPortrait = uResolution.y > uResolution.x;
+        float fadeLimit = isPortrait ? (uResolution.y / uResolution.x) * 1.2 : 1.2;
+        float fade = smoothstep(fadeLimit, 0.2, length(uv));
 
-        // Fusion : le faisceau sert de masque, les filaments créent les fils d'aurore
+        // Fusion
         float alpha = beam * (0.3 + threads * 1.8 + n * 0.4) * uIntensity * fade;
         vec3 finalColor = color * (1.2 + threads * 1.5);
 
