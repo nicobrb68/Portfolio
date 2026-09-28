@@ -4,7 +4,7 @@ import { useState } from "react";
 
 const subjects = [
   { value: "alternance", label: "Alternance" },
-  { value: "freelance", label: "Projet freelance" },
+  { value: "stage", label: "Stage" },
   { value: "autre", label: "Autre" },
 ];
 
@@ -47,7 +47,7 @@ export default function ContactForm() {
     return (
       <div className="grain-bg flex min-h-[22rem] flex-col justify-end p-6 text-on-grain md:p-8">
         <p className="font-display text-[13vw] md:text-[5vw]">Message envoyé.</p>
-        <p className="mt-3 max-w-md">Merci ! Je te réponds au plus vite, en général sous 24 à 48 heures.</p>
+        <p className="mt-3 max-w-md">Merci pour votre message ! Je vous répondrai dans les plus brefs délais.</p>
       </div>
     );
   }
@@ -76,7 +76,7 @@ export default function ContactForm() {
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
           <label htmlFor="identity" className={label}>
-            Nom / entreprise
+            Nom / Entreprise
           </label>
           <input id="identity" name="identity" required maxLength={120} autoComplete="name" className={field} />
         </div>
@@ -108,7 +108,7 @@ export default function ContactForm() {
         </button>
         {status === "error" && (
           <p role="alert" className="text-sm">
-            {error} Tu peux aussi m&apos;écrire directement par email.
+            {error} Vous pouvez aussi m&apos;écrire directement par email.
           </p>
         )}
       </div>

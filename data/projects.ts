@@ -53,26 +53,37 @@ export const profile = {
 };
 
 export const skills = {
-  Langages: ["C", "Rust", "Python", "TypeScript", "JavaScript", "SQL", "Bash"],
-  Frameworks: ["React", "Next.js", "Fastify", "Node.js"],
-  Architecture: ["Microservices", "Clean Architecture", "TDD", "REST / WebSocket"],
-  "IA & LLM": ["Agents", "RAG", "Function calling", "MCP"],
-  "Outils & infra": ["Docker", "Docker Compose", "Linux", "PostgreSQL", "Git"],
+  "Systèmes & Cloud": ["Linux (Debian)", "Docker", "Docker Compose", "Virtualisation", "Bash"],
+  Langages: ["C", "Python", "Rust", "TypeScript", "SQL"],
+  "Réseaux & Sécu": ["TCP/IP", "Routage IPv4", "SSH", "UFW", "Durcissement OS"],
+  "Architecture & Concurrence": ["Multithreading", "Mutex / POSIX", "Microservices", "REST & WebSocket"],
+  "Outils & IA": ["Git", "GitHub Actions / CI", "PostgreSQL", "Agents IA & LLM", "RAG"],
 };
 
 export const experiences: Experience[] = [
   {
     period: "2025 — aujourd'hui",
-    title: "Étudiant — 42 Next",
+    title: "Expert en architecture informatique",
     place: "École 42 Mulhouse",
     description:
-      "Tronc commun en peer learning et peer evaluation, sans cours ni professeurs. Algorithmique en C, Rust et Python, concurrence, systèmes d'IA, conteneurisation Docker, réseaux TCP/IP. En tête d'avancement de promotion.",
+      "Formation en peer-learning de niveau RNCP 7. Systèmes d'exploitation, programmation concurrente en C, conteneurisation Docker, automatisation Bash/Python et agents IA. En tête d'avancement de promotion.",
+    highlights: [
+      "Administration système Linux & durcissement d'environnements",
+      "Orchestration et déploiement de microservices Docker",
+      "Développement système bas niveau et gestion mémoire en C",
+    ],
   },
   {
     period: "2024 — 2025",
-    title: "Parcours informatique & développement",
-    place: "En autodidacte & formation",
-    minor: true,
+    title: "Maintenance & équipement naval",
+    place: "Sandringham Marine — Melbourne, Australie",
+    description: "Contrôle, maintenance et fiabilisation des équipements en immersion totale anglophone.",
+  },
+  {
+    period: "2019 — 2024",
+    title: "Polissage Haute Horlogerie",
+    place: "Termitech — Alle, Suisse",
+    description: "Finition haut de gamme de métaux précieux, respect scrupuleux des tolérances et contrôle qualité rigoureux.",
   },
 ];
 

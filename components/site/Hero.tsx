@@ -5,7 +5,7 @@ import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import { profile } from "@/data/projects";
-import photo from "@/public/nolhan.jpg";
+import photo from "@/public/nicolas.jpg";
 
 function Chars({ text }: { text: string }) {
   return (
@@ -19,7 +19,7 @@ function Chars({ text }: { text: string }) {
   );
 }
 
-const stack = ["TypeScript", "Symfony", "React", "Rust", "Python", "Docker", "PostgreSQL", "Next.js", "C", "LLM & RAG"];
+const stack = ["Docker", "Linux", "Kubernetes", "Rust", "Python", "C", "TypeScript", "PostgreSQL", "CI/CD", "Next.js"];
 
 export default function Hero() {
   const root = useRef<HTMLElement>(null);
@@ -45,7 +45,6 @@ export default function Hero() {
           ease: "none",
           scrollTrigger: { trigger: root.current, start: "top top", end: "bottom top", scrub: true },
         });
-
       }
     }, root);
 
@@ -64,7 +63,7 @@ export default function Hero() {
 
         <h1 className="font-display my-8 text-[25vw] md:my-0 md:text-[19.5vw]" aria-label={profile.name}>
           <span data-line="1" className="line-mask">
-            <Chars text="Nolhan" />
+            <Chars text="Nicolas" />
           </span>
           <span data-line="2" className="flex items-end justify-end gap-[0.06em]">
             <span data-photo className="relative mb-[0.06em] mr-[0.06em] block w-[0.72em] shrink-0 md:w-[0.8em]">
@@ -74,7 +73,7 @@ export default function Hero() {
                 <span className="relative block h-full w-full overflow-hidden rounded-full">
                   <Image
                     src={photo}
-                    alt="Nolhan Bilyj"
+                    alt={profile.name}
                     fill
                     priority
                     sizes="(min-width: 768px) 16vw, 20vw"
@@ -84,7 +83,7 @@ export default function Hero() {
               </span>
             </span>
             <span className="line-mask">
-              <Chars text="Bilyj" />
+              <Chars text="Barbosa" />
             </span>
           </span>
         </h1>
@@ -103,9 +102,7 @@ export default function Hero() {
           </div>
           <div data-fade className="md:col-span-5 md:col-start-8">
             <p className="text-lg font-medium leading-snug md:text-xl">
-              Je conçois des applications de bout en bout, du modèle métier jusqu&apos;à l&apos;interface. Étudiant à
-              42 Mulhouse et freelance depuis 2025, je cherche une alternance en développement full-stack, backend ou
-              IA.
+              Passionné par les architectures résilientes, la conteneurisation et le bas niveau. Étudiant à 42 Mulhouse, je recherche une alternance axée DevOps, infrastructure et développement backend.
             </p>
             <p className="mt-4 flex flex-wrap gap-x-3 gap-y-1 font-mono text-[11px] uppercase tracking-wider md:text-xs">
               <span className="text-grain grain-tight font-bold">Alternance</span>

@@ -28,13 +28,13 @@ export default function About() {
       <div className="grid gap-16 lg:grid-cols-12">
         <div className="lg:col-span-5">
           <p data-reveal className="text-xl font-medium leading-snug md:text-2xl">
-            J&apos;ai {age(profile.birthDate)} ans et je suis développeur logiciel en formation à 42 Mulhouse.
+            J&apos;ai {age(profile.birthDate)} ans et je prépare le titre d&apos;Expert en architecture informatique (RNCP 7) à l&apos;École 42 Mulhouse.
           </p>
           <p data-reveal className="mt-6 text-base leading-relaxed opacity-80 md:text-lg">
-            Passionné par le développement et la résolution de problèmes complexes, je conçois des applications robustes et performantes en appliquant les bonnes pratiques de conception logicielle.
+            Avant l&apos;informatique, j&apos;ai développé ma rigueur dans la haute horlogerie suisse et consolidé mon anglais technique lors d&apos;une expatriation d&apos;un an en Australie. En intégrant 42, j&apos;ai trouvé ma véritable voie dans l&apos;administration système, le bas niveau et la conteneurisation.
           </p>
           <p data-reveal className="mt-6 text-base leading-relaxed opacity-80 md:text-lg">
-            Actuellement parmi les étudiants les plus avancés de ma promotion à 42, je développe constamment de nouveaux projets et j&apos;approfondis mes compétences techniques au quotidien.
+            Aujourd&apos;hui parmi les étudiants les plus avancés de ma promotion, je me concentre sur la résilience des architectures, l&apos;automatisation avec Docker, Linux et Python, et je recherche une alternance de 24 mois en DevOps pour janvier 2027.
           </p>
           <div data-reveal className="mt-8 flex flex-wrap gap-2">
             {profile.languages.map((l) => (

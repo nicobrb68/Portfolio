@@ -6,9 +6,11 @@ import { TitleChars, useReveal } from "@/components/site/useReveal";
 import ContactForm from "@/components/site/ContactForm";
 
 const links = [
-  { label: "Téléphone", value: profile.phone, href: `tel:${profile.phone.replace(/\s/g, "")}` },
-  { label: "LinkedIn", value: "Nolhan Bilyj", href: profile.linkedin },
-  { label: "GitHub", value: "Nolhan-B", href: profile.github },
+  ...(profile.phone
+    ? [{ label: "Téléphone", value: profile.phone, href: `tel:${profile.phone.replace(/\s/g, "")}` }]
+    : []),
+  { label: "LinkedIn", value: "Nicolas Barbosa", href: profile.linkedin },
+  { label: "GitHub", value: "nicobrb68", href: profile.github },
   { label: "CV", value: "PDF ↓", href: profile.cv },
 ];
 

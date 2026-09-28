@@ -4,7 +4,7 @@ import nodemailer from "nodemailer";
 // Sujets proposés par le formulaire de contact
 const subjectMapping: Record<string, string> = {
   alternance: "Alternance",
-  freelance: "Projet freelance",
+  stage: "Stage",
   autre: "Autre",
 };
 
@@ -17,7 +17,7 @@ export async function POST(req: Request) {
   try {
     const { identity, email, subject, content, website } = await req.json();
 
-    // Champ piège rempli : c'est un robot, on fait comme si tout s'était bien passé
+    // Honeypot anti-spam : robot détecté
     if (website) return NextResponse.json({ success: true });
 
     if (
@@ -38,9 +38,10 @@ export async function POST(req: Request) {
 
     const readableSubject = subjectMapping[subject] ?? "Autre";
 
+    // Configuration SMTP via variables d'environnement (.env.local)
     const transporter = nodemailer.createTransport({
-      host: "ssl0.ovh.net",
-      port: 465,
+      host: process.env.SMTP_HOST || "smtp.gmail.com",
+      port: Number(process.env.SMTP_PORT) || 465,
       secure: true,
       auth: {
         user: process.env.AUTH_EMAIL_USER,
@@ -48,7 +49,6 @@ export async function POST(req: Request) {
       },
     });
 
-    // Toutes les saisies sont échappées avant d'être insérées dans le HTML
     const html = `
       <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #111; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd;">
         <h2 style="margin-top: 0;">Nouveau message via le portfolio</h2>
@@ -61,8 +61,8 @@ export async function POST(req: Request) {
     `;
 
     await transporter.sendMail({
-      from: "portfolio-nolhan-bilyj-contact@db-vtc-belfort.fr",
-      to: "nolhanbil@gmail.com",
+      from: `"Portfolio Nicolas Barbosa" <${process.env.AUTH_EMAIL_USER}>`,
+      to: "nicolas.barbosa68210@gmail.com",
       replyTo: email,
       subject: `Portfolio — ${readableSubject} — ${identity.slice(0, 60)}`,
       html,
