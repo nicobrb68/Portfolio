@@ -38,7 +38,7 @@ export const profile = {
   email: "nicolas.barbosa68210@gmail.com",
   cv: "/CV_Barbosa_Nicolas_Devops.pdf",
   github: "https://github.com/nicobrb68",
-  linkedin: "https://www.linkedin.com/in/nicolas-barbosa-4b928320b/",
+  linkedin: "https://www.linkedin.com/in/nicolas-barbosa68",
   alternance: {
     start: "Janvier 2027",
     duration: "24 mois",
@@ -133,7 +133,7 @@ export const projects42: Project[] = [
     stack: ["TypeScript", "Fastify", "Prisma", "PostgreSQL", "WebSocket", "Docker"],
     tags: ["web", "backend", "devops"],
     links: { github: "https://github.com/nicobrb68" },
-    images: ["/projects/transcendence-app.png"],
+    images: [],
   },
   {
     slug: "the-answer-protocol",

@@ -44,7 +44,7 @@ export default function Hero() {
       });
 
       gsap.to(name1Ref.current, {
-        x: -35,
+        x: -45,
         scrollTrigger: {
           trigger: root.current,
           start: "top top",
@@ -54,7 +54,7 @@ export default function Hero() {
       });
 
       gsap.to(name2Ref.current, {
-        x: 40,
+        x: 55,
         scrollTrigger: {
           trigger: root.current,
           start: "top top",
@@ -64,7 +64,7 @@ export default function Hero() {
       });
 
       gsap.to(photoRef.current, {
-        y: 45,
+        y: 40,
         scrollTrigger: {
           trigger: root.current,
           start: "top top",
@@ -78,93 +78,115 @@ export default function Hero() {
   }, []);
 
   return (
-    <section ref={root} id="top" className="relative min-h-[95vh] flex flex-col justify-between px-6 pb-8 pt-28 md:px-12 md:pt-36 overflow-hidden">
-      {/* Halo violet profond */}
+    <section
+      ref={root}
+      id="top"
+      className="relative min-h-screen w-full flex flex-col justify-between pt-20 pb-8 overflow-hidden bg-paper"
+    >
+      {/* Halo violet d'ambiance */}
       <div 
         aria-hidden 
-        className="pointer-events-none absolute -top-32 left-1/3 w-[650px] h-[380px] bg-gradient-to-tr from-purple-700/25 via-violet-600/20 to-fuchsia-600/10 blur-[130px] rounded-full"
+        className="pointer-events-none absolute -top-32 left-1/4 w-[85vw] h-[450px] bg-gradient-to-tr from-purple-700/20 via-violet-600/15 to-transparent blur-[140px] rounded-full"
       />
 
-      {/* Barre de statut avec la pastille dispo */}
-      <div data-fade className="relative z-10 max-w-7xl w-full mx-auto flex flex-wrap items-center justify-between gap-4 font-mono text-xs md:text-sm text-ink/70 border-b border-border/80 pb-5">
-        <div className="flex items-center gap-3">
-          <span className="relative flex h-2.5 w-2.5">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
+      <div className="w-full flex-1 flex flex-col justify-between">
+        
+        {/* Bandeau statut haut */}
+        <div data-fade className="w-full flex items-center justify-between px-6 md:px-12 py-4 font-mono text-xs uppercase tracking-wider text-ink/70 border-b border-border">
+          <div className="flex items-center gap-3">
+            <span className="relative flex h-2.5 w-2.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
+            </span>
+            <span className="font-semibold text-emerald-600 dark:text-emerald-400">
+              Disponible pour alternance dès {profile.alternance.start}
+            </span>
+          </div>
+          <span className="font-medium text-ink/80 hidden sm:inline">
+            École 42 Mulhouse · {profile.location}
           </span>
-          <span className="font-semibold text-emerald-600 dark:text-emerald-400">
-            Disponible pour alternance dès {profile.alternance.start}
+          <span className="text-purple-400 font-bold">
+            (01) Portfolio
           </span>
         </div>
-        <span className="font-medium text-ink/80">
-          École 42 Mulhouse · {profile.location}
-        </span>
-      </div>
 
-      {/* Titre déstructuré */}
-      <div className="relative z-10 max-w-7xl w-full mx-auto my-10 md:my-14">
-        <div data-fade className="flex flex-col-reverse lg:flex-row lg:items-center lg:justify-between gap-10">
-          <div className="flex-1 select-none">
-            {/* Ton tag personnalisé avec padding élargi */}
-            <div className="inline-flex items-center gap-2 px-6 py-4 rounded-full border border-purple-500/30 bg-purple-500/10 text-purple-600 dark:text-purple-300 font-mono text-xs md:text-sm font-semibold mb-6 shadow-sm shadow-purple-500/10">
-              <span>(01) {profile.role}</span>
-            </div>
-
-            <div className="space-y-1 md:space-y-2">
-              <span
-                ref={name1Ref}
-                className="block font-display text-6xl sm:text-8xl lg:text-[7.5rem] tracking-tight text-ink uppercase leading-none"
-              >
-                Nicolas
-              </span>
-              <span
-                ref={name2Ref}
-                className="block font-display-wide text-5xl sm:text-7xl lg:text-[6.5rem] tracking-wide uppercase leading-none pl-6 sm:pl-16 md:pl-24 text-transparent bg-clip-text bg-gradient-to-r from-purple-500 via-violet-400 to-fuchsia-400"
-              >
-                Barbosa
-              </span>
-            </div>
-
-            <p className="mt-8 text-lg sm:text-2xl font-light text-ink/80 max-w-2xl leading-relaxed">
-              Conception d&apos;infrastructures fiables, automatisation conteneurisée et programmation système au cœur du cursus 42.
-            </p>
+        {/* Cœur du Hero */}
+        <div data-fade className="w-full px-6 md:px-12 my-8 md:my-12">
+          
+          {/* Titre de rôle valorisé en grand format */}
+          <div className="mb-6 flex items-center gap-3 font-mono">
+            <span className="text-purple-400 font-bold text-sm sm:text-base">[01.0]</span>
+            <h1 className="text-sm sm:text-base md:text-xl font-bold uppercase tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-fuchsia-300 to-indigo-300">
+              {profile.role}
+            </h1>
           </div>
 
-          <div ref={photoRef} className="relative group shrink-0 self-start lg:self-center">
-            <div 
-              aria-hidden 
-              className="absolute -inset-3 rounded-3xl bg-gradient-to-tr from-purple-600 to-fuchsia-500 opacity-25 blur-2xl transition duration-700 group-hover:opacity-60"
-            />
-            <div className="relative w-36 h-36 sm:w-48 sm:h-48 md:w-56 md:h-56 rounded-3xl overflow-hidden border-2 border-border bg-card shadow-2xl">
-              <Image
-                src={photo}
-                alt={profile.name}
-                fill
-                priority
-                className="object-cover transition-transform duration-700 group-hover:scale-105"
+          <div className="flex flex-col-reverse lg:flex-row lg:items-center lg:justify-between gap-10">
+            <div className="flex-1 select-none">
+              <div className="space-y-1">
+                <span
+                  ref={name1Ref}
+                  className="block font-display text-[13.5vw] lg:text-[10.5vw] tracking-tight text-ink uppercase leading-[0.82]"
+                >
+                  Nicolas
+                </span>
+                <span
+                  ref={name2Ref}
+                  className="block font-display-wide text-[12vw] lg:text-[9.5vw] tracking-wide uppercase leading-[0.85] pl-4 sm:pl-16 md:pl-28 text-transparent bg-clip-text bg-gradient-to-r from-purple-500 via-violet-400 to-fuchsia-400"
+                >
+                  Barbosa
+                </span>
+              </div>
+
+              {/* Accroche technique */}
+              <div className="mt-8 border-l-2 border-purple-500/60 pl-6 py-2 max-w-4xl">
+                <p className="text-xl sm:text-2xl md:text-3xl font-medium tracking-tight text-ink/80 leading-snug">
+                  Du <span className="text-ink font-semibold">bas niveau en C</span> aux{" "}
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-fuchsia-400 to-indigo-400 font-bold">
+                    microservices Docker
+                  </span>{" "}
+                  : conteneurisation, automatisation système, intégration LLM et architectures fiables.
+                </p>
+              </div>
+            </div>
+
+            {/* Photo grand format */}
+            <div ref={photoRef} className="relative group shrink-0 self-start lg:self-center">
+              <div 
+                aria-hidden 
+                className="absolute -inset-4 rounded-3xl bg-gradient-to-tr from-purple-600 to-fuchsia-500 opacity-25 blur-3xl transition duration-700 group-hover:opacity-50"
               />
+              <div className="relative w-40 h-40 sm:w-56 sm:h-56 md:w-64 md:h-64 lg:w-72 lg:h-72 rounded-3xl overflow-hidden border-2 border-border bg-card shadow-2xl">
+                <Image
+                  src={photo}
+                  alt={profile.name}
+                  fill
+                  priority
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Section Alternance & Actions */}
-        <div data-fade className="mt-12 pt-8 border-t border-border/80 grid gap-8 md:grid-cols-12 md:items-center">
-          <div className="md:col-span-6 space-y-3">
-            <div className="inline-block px-3 py-1 rounded bg-purple-500/10 text-purple-600 dark:text-purple-300 font-mono text-xs font-bold uppercase tracking-wider">
-              Alternance 24 mois
-            </div>
-            <p className="text-xl font-semibold text-ink">
-              Titre Expert en architecture informatique (RNCP 7 / Bac+5)
+        {/* Bandeau d'alternance & actions */}
+        <div data-fade className="w-full border-t border-border grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-border">
+          <div className="lg:col-span-6 px-6 md:px-12 py-6 flex flex-col justify-center gap-1">
+            <span className="font-mono text-xs font-bold uppercase tracking-wider text-purple-400">
+              Alternance 24 mois · Dès {profile.alternance.start}
+            </span>
+            <p className="text-lg md:text-xl font-semibold text-ink">
+              Titre Expert en architecture informatique (RNCP 7 / Master Bac+5)
             </p>
-            <p className="text-sm font-mono text-ink/60">
-              Rythme 3 sem. entreprise / 1 sem. école · Dès {profile.alternance.start}
+            <p className="text-xs font-mono text-ink/50">
+              Rythme 3 sem. entreprise / 1 sem. école
             </p>
           </div>
 
-          <div className="md:col-span-6 flex flex-wrap items-center justify-start md:justify-end gap-3 font-mono text-xs uppercase tracking-wider font-bold">
+          <div className="lg:col-span-6 px-6 md:px-12 py-6 flex flex-wrap items-center justify-start lg:justify-end gap-3 font-mono text-xs uppercase tracking-wider font-bold">
             <a
               href="#projets-42"
-              className="bg-purple-600 hover:bg-purple-500 text-white px-6 py-3.5 rounded-lg transition-all shadow-md shadow-purple-600/20 active:scale-95"
+              className="bg-purple-600 hover:bg-purple-500 text-white px-7 py-4 rounded-lg transition-all shadow-md shadow-purple-600/20 active:scale-95"
             >
               Projets & Réalisations ↓
             </a>
@@ -172,7 +194,7 @@ export default function Hero() {
               href={profile.cv}
               target="_blank"
               rel="noreferrer"
-              className="border border-border hover:border-purple-500 hover:text-purple-400 px-5 py-3.5 rounded-lg transition-all text-ink active:scale-95 bg-paper/60"
+              className="border border-border hover:border-purple-500 hover:text-purple-400 px-6 py-4 rounded-lg transition-all text-ink active:scale-95 bg-card/40"
             >
               CV (PDF) ↗
             </a>
@@ -180,7 +202,7 @@ export default function Hero() {
               href={profile.linkedin}
               target="_blank"
               rel="noreferrer"
-              className="border border-border hover:border-purple-500 hover:text-purple-400 px-5 py-3.5 rounded-lg transition-all text-ink active:scale-95 bg-paper/60"
+              className="border border-border hover:border-purple-500 hover:text-purple-400 px-6 py-4 rounded-lg transition-all text-ink active:scale-95 bg-card/40"
             >
               LinkedIn ↗
             </a>
@@ -188,15 +210,13 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* BANDEAU DÉFILANT CONTINU (FLUX TECHNIQUE) */}
-      <div data-fade className="relative z-10 max-w-7xl w-full mx-auto pt-6 border-t border-border/80 pointer-events-none select-none">
-        <div className="relative overflow-hidden py-3 rounded-xl border border-purple-500/20 bg-purple-950/10 backdrop-blur-sm [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+      {/* Marquee défilant */}
+      <div data-fade className="w-full pt-6 border-t border-border select-none pointer-events-none">
+        <div className="w-full overflow-hidden py-3 bg-purple-950/10 [mask-image:linear-gradient(to_right,transparent,black_5%,black_95%,transparent)]">
           <div className="animate-marquee gap-8 items-center">
             {[...marqueeItems, ...marqueeItems].map((item, idx) => (
               <div key={idx} className="flex items-center gap-6 font-mono text-xs sm:text-sm uppercase tracking-wider text-ink/75 shrink-0">
-                <span className="font-medium">
-                  {item}
-                </span>
+                <span className="font-medium">{item}</span>
                 <span className="h-1.5 w-1.5 rotate-45 bg-purple-500 shadow-[0_0_8px_rgba(168,85,247,0.8)]" />
               </div>
             ))}

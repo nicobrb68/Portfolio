@@ -2,92 +2,162 @@
 
 import { useRef } from "react";
 import { profile } from "@/data/projects";
-import { TitleChars, useReveal } from "@/components/site/useReveal";
 import ContactForm from "@/components/site/ContactForm";
 
-const links = [
+const contactLinks = [
   ...(profile.phone
     ? [{ label: "Téléphone", value: profile.phone, href: `tel:${profile.phone.replace(/\s/g, "")}` }]
     : []),
   { label: "LinkedIn", value: "Nicolas Barbosa", href: profile.linkedin },
   { label: "GitHub", value: "nicobrb68", href: profile.github },
-  { label: "CV", value: "PDF ↓", href: profile.cv },
+  { label: "Curriculum Vitae", value: "Télécharger PDF", href: profile.cv },
 ];
 
 export default function Contact() {
   const root = useRef<HTMLElement>(null);
-  useReveal(root);
 
   return (
-    <section ref={root} id="contact" className="flex min-h-[100svh] flex-col justify-between px-4 pt-24 md:px-8 md:pt-32">
-      <div>
-        <p className="mb-6 font-mono text-[11px] uppercase tracking-wider md:text-xs">(06) Contact</p>
-        <h2 data-title className="font-display text-[14.8vw] md:text-[12.5vw]" aria-label="Une alternance ? Parlons-en.">
-          <TitleChars text={"Une alternance\u00a0?"} />
-          <TitleChars text="Parlons-en." className="text-grain" />
-        </h2>
+    <section
+      ref={root}
+      id="contact"
+      className="relative min-h-screen flex flex-col justify-between border-t border-border bg-paper w-full overflow-hidden"
+    >
+      {/* Halo violet d'ambiance grand angle */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -top-40 right-0 w-[80vw] h-[500px] bg-gradient-to-b from-purple-900/15 via-violet-600/10 to-transparent blur-[140px]"
+      />
 
-        <dl data-reveal className="mt-12 grid gap-px border border-ink bg-ink sm:grid-cols-3 md:mt-16">
-          {[
-            ["Début", profile.alternance.start],
-            ["Rythme", profile.alternance.rhythm],
-            ["Durée", profile.alternance.duration],
-          ].map(([term, value], i) => (
-            <div key={term} className={`p-5 ${i === 0 ? "grain-bg text-on-grain" : "bg-paper"}`}>
-              <dt className="font-mono text-[11px] uppercase tracking-wider opacity-60">{term}</dt>
-              <dd className="font-display-wide mt-2 text-lg md:text-xl">{value}</dd>
+      <div className="w-full">
+        {/* Bandeau d'en-tête pleine largeur */}
+        <div className="flex items-center justify-between px-6 py-5 border-b border-border font-mono text-xs uppercase tracking-wider text-ink/60 md:px-12">
+          <span className="flex items-center gap-2.5">
+            <span className="h-2 w-2 rounded-full bg-purple-500 animate-pulse shadow-[0_0_8px_rgba(168,85,247,0.8)]" />
+            (06) Prise de contact
+          </span>
+          <span className="hidden sm:inline">Grand-Est · Suisse</span>
+          <span>Alternance 2027</span>
+        </div>
+
+        {/* Titre monumental qui prend toute la largeur de l'écran */}
+        <div className="px-6 pt-12 pb-8 md:px-12 md:pt-16 border-b border-border">
+          <h2 className="font-display font-black uppercase tracking-tight text-ink text-[13vw] sm:text-[11vw] lg:text-[9.5vw] leading-[0.85] select-none">
+            Prenons <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-fuchsia-400 to-indigo-400">
+              Contact.
+            </span>
+          </h2>
+        </div>
+
+        {/* Grille pleine largeur : Métriques d'alternance façon console de bord */}
+        <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-border border-b border-border font-mono">
+          <div className="p-6 md:p-10 flex flex-col justify-between bg-card/20">
+            <span className="text-xs uppercase tracking-wider text-purple-400 font-bold">
+              [01] Disponibilité
+            </span>
+            <div className="my-6">
+              <span className="font-display-wide text-3xl sm:text-4xl lg:text-5xl font-bold text-ink">
+                {profile.alternance.start}
+              </span>
+              <p className="mt-2 text-xs text-ink/50">Contrat d&apos;alternance · 24 mois</p>
             </div>
-          ))}
-        </dl>
+            <span className="text-[11px] text-emerald-400 flex items-center gap-1.5 font-semibold">
+              ● Statut : En recherche active
+            </span>
+          </div>
 
-        <div className="mt-12 grid gap-12 md:mt-16 lg:grid-cols-12 lg:gap-10">
-          <div data-reveal className="lg:col-span-5">
-            <p className="mb-3 font-mono text-[11px] uppercase tracking-wider opacity-60">Par email</p>
-            <a
-              href={`mailto:${profile.email}`}
-              className="grain-hover font-display-wide inline-block text-[5.4vw] underline decoration-ink decoration-[0.06em] underline-offset-[0.15em] sm:text-3xl lg:text-[2.3vw]"
-            >
-              {profile.email.split("@")[0]}@<wbr />
-              {profile.email.split("@")[1]}
-            </a>
-            <div className="mt-8 grid gap-px border border-ink bg-ink sm:grid-cols-2">
-              {links.map((l) => (
+          <div className="p-6 md:p-10 flex flex-col justify-between bg-card/20">
+            <span className="text-xs uppercase tracking-wider text-ink/50 font-bold">
+              [02] Rythme
+            </span>
+            <div className="my-6">
+              <span className="font-display-wide text-3xl sm:text-4xl lg:text-5xl font-bold text-ink">
+                3 sem. / 1 sem.
+              </span>
+              <p className="mt-2 text-xs text-ink/50">3 semaines entreprise / 1 semaine école</p>
+            </div>
+            <span className="text-[11px] text-ink/40">Présence maximisée en équipe</span>
+          </div>
+
+          <div className="p-6 md:p-10 flex flex-col justify-between bg-card/20">
+            <span className="text-xs uppercase tracking-wider text-ink/50 font-bold">
+              [03] Cursus & Diplôme
+            </span>
+            <div className="my-6">
+              <span className="font-display-wide text-3xl sm:text-4xl lg:text-5xl font-bold text-ink">
+                RNCP 7 · Bac+5 Master
+              </span>
+              <p className="mt-2 text-xs text-ink/50">Expert en architecture informatique</p>
+            </div>
+            <span className="text-[11px] text-purple-400">École 42 Mulhouse</span>
+          </div>
+        </div>
+
+        {/* Section interaction : 50/50 plein écran */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-border">
+          {/* Colonne gauche : Coordonnées & Liens */}
+          <div className="lg:col-span-6 p-6 md:p-12 flex flex-col justify-between space-y-12">
+            <div>
+              <p className="font-mono text-xs uppercase tracking-wider text-purple-400 font-bold mb-4">
+                Adresse électronique directe
+              </p>
+              <a
+                href={`mailto:${profile.email}`}
+                className="group block font-display-wide text-2xl sm:text-4xl lg:text-[2.6vw] font-bold text-ink tracking-tight hover:text-purple-300 transition-colors break-words leading-tight"
+              >
+                {profile.email}
+                <span className="block h-0.5 w-full bg-border group-hover:bg-purple-500 transition-all duration-300 mt-4" />
+              </a>
+            </div>
+
+            {/* Liens avec séparateurs francs */}
+            <div className="divide-y divide-border border-y border-border">
+              {contactLinks.map((link) => (
                 <a
-                  key={l.label}
-                  href={l.href}
-                  target={l.href.startsWith("http") || l.href.endsWith(".pdf") ? "_blank" : undefined}
+                  key={link.label}
+                  href={link.href}
+                  target={link.href.startsWith("http") || link.href.endsWith(".pdf") ? "_blank" : undefined}
                   rel="noreferrer"
-                  className="group flex items-end justify-between bg-paper p-5 transition-colors hover:grain-bg hover:text-on-grain"
+                  className="group py-5 flex items-center justify-between text-ink hover:text-purple-400 transition-colors"
                 >
-                  <span>
-                    <span className="block font-mono text-[11px] uppercase tracking-wider opacity-60">{l.label}</span>
-                    <span className="font-display-wide mt-2 block text-lg">{l.value}</span>
+                  <span className="font-mono text-xs uppercase tracking-wider text-ink/60 group-hover:text-purple-300">
+                    {link.label}
                   </span>
-                  <span className="font-mono transition-transform group-hover:-translate-y-1 group-hover:translate-x-1">↗</span>
+                  <div className="flex items-center gap-3">
+                    <span className="font-mono text-sm font-semibold">{link.value}</span>
+                    <span className="font-mono text-xs transition-transform duration-200 group-hover:translate-x-1 group-hover:-translate-y-1">
+                      ↗
+                    </span>
+                  </div>
                 </a>
               ))}
             </div>
           </div>
-          <div data-reveal className="lg:col-span-6 lg:col-start-7">
-            <p className="mb-6 font-mono text-[11px] uppercase tracking-wider opacity-60">Ou via ce formulaire</p>
+
+          {/* Colonne droite : Formulaire structuré */}
+          <div className="lg:col-span-6 p-6 md:p-12 bg-card/10">
+            <p className="font-mono text-xs uppercase tracking-wider text-purple-400 font-bold mb-8">
+              Formulaire de transmission direct
+            </p>
             <ContactForm />
           </div>
         </div>
       </div>
 
-      <footer className="mt-24 flex flex-col gap-3 border-t border-ink/20 py-6 font-mono text-[11px] uppercase tracking-wider md:flex-row md:items-center md:justify-between md:text-xs">
-        <span>© {new Date().getFullYear()} {profile.name}</span>
-        <span className="flex gap-6">
-          <a href={profile.linkedin} target="_blank" rel="noreferrer" className="hover:line-through">
-            LinkedIn ↗
-          </a>
-          <a href={profile.github} target="_blank" rel="noreferrer" className="hover:line-through">
+      {/* Footer technique pleine largeur */}
+      <footer className="w-full border-t border-border px-6 py-6 md:px-12 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs text-ink/50 bg-paper">
+        <div>© {new Date().getFullYear()} {profile.name} · 42 Mulhouse</div>
+        <div className="flex items-center gap-8">
+          <a href={profile.github} target="_blank" rel="noreferrer" className="hover:text-purple-400 transition-colors">
             GitHub ↗
           </a>
-        </span>
-        <a href="#top" className="hover:line-through">
-          Retour en haut ↑
-        </a>
+          <a href={profile.linkedin} target="_blank" rel="noreferrer" className="hover:text-purple-400 transition-colors">
+            LinkedIn ↗
+          </a>
+          <a href="#top" className="hover:text-purple-400 transition-colors">
+            Retour en haut ↑
+          </a>
+        </div>
       </footer>
     </section>
   );
