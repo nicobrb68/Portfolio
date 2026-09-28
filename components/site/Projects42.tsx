@@ -16,23 +16,61 @@ export default function Projects42() {
   const root = useRef<HTMLElement>(null);
   const [activeSlug, setActiveSlug] = useState<string | null>("ft-transcendence");
 
+  // Animation d'apparition globale (Cascade GSAP)
   useLayoutEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduce || !root.current) return;
 
     const ctx = gsap.context(() => {
-      ScrollTrigger.create({
-        trigger: root.current,
-        start: "top 75%",
-        once: true,
-        onEnter: () => {
-          setActiveSlug((prev) => prev ?? "ft-transcendence");
+      // 1. Entrée échelonnée des lignes de projets
+      gsap.from("[data-project-row]", {
+        y: 45,
+        opacity: 0,
+        duration: 0.9,
+        stagger: 0.12,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: root.current,
+          start: "top 75%",
+          once: true,
         },
       });
     }, root);
 
     return () => ctx.revert();
   }, []);
+
+  // Gestion du Tilt 3D par élément
+  const handleMouseMove = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) return;
+
+    const target = e.currentTarget;
+    const rect = target.getBoundingClientRect();
+    
+    // Position normalisée entre -1 et 1
+    const x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+    const y = ((e.clientY - rect.top) / rect.height) * 2 - 1;
+
+    // Déplacement subtil : 4° max en Y, 3° max en X
+    gsap.to(target, {
+      rotateY: x * 3.5,
+      rotateX: -y * 2.5,
+      transformPerspective: 1000,
+      duration: 0.35,
+      ease: "power2.out",
+    });
+  };
+
+  const handleMouseLeave = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const target = e.currentTarget;
+    gsap.to(target, {
+      rotateY: 0,
+      rotateX: 0,
+      duration: 0.6,
+      ease: "power3.out",
+    });
+  };
 
   return (
     <section ref={root} id="projets-42" className="border-t border-border w-full bg-paper overflow-hidden">
@@ -59,7 +97,7 @@ export default function Projects42() {
       </div>
 
       {/* Lignes interactives de projets (bord à bord) */}
-      <div className="w-full divide-y divide-border border-b border-border">
+      <div className="w-full divide-y divide-border border-b border-border [perspective:1000px]">
         {projects42.map((p, i) => {
           const isOpened = activeSlug === p.slug;
           const hasImages = Boolean(p.images && p.images.length > 0);
@@ -67,11 +105,12 @@ export default function Projects42() {
           return (
             <div
               key={p.slug}
-              className={`group relative overflow-hidden transition-colors duration-500 ${
+              data-project-row
+              className={`group relative overflow-hidden transition-colors duration-500 will-change-transform ${
                 isOpened ? "bg-purple-950/20" : ""
               }`}
             >
-              {/* Effet aurore boréale au survol */}
+              {/* Effet d'ambiance au survol */}
               <div
                 aria-hidden
                 className={`pointer-events-none absolute inset-0 -z-10 transition-all duration-700 ease-out ${
@@ -90,7 +129,9 @@ export default function Projects42() {
               <button
                 type="button"
                 onClick={() => setActiveSlug(isOpened ? null : p.slug)}
-                className="w-full py-8 md:py-12 px-6 md:px-12 flex flex-col md:flex-row md:items-center justify-between gap-6 text-left cursor-pointer transition-all relative z-10"
+                onMouseMove={handleMouseMove}
+                onMouseLeave={handleMouseLeave}
+                className="w-full py-8 md:py-12 px-6 md:px-12 flex flex-col md:flex-row md:items-center justify-between gap-6 text-left cursor-pointer transition-all relative z-10 [transform-style:preserve-3d]"
               >
                 <div className="flex items-baseline gap-6 md:gap-12 transition-transform duration-300 group-hover:translate-x-3">
                   <span className="font-mono text-base md:text-xl text-purple-400 font-bold group-hover:text-fuchsia-300 transition-colors">

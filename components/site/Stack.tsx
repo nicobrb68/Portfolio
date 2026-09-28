@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { profile } from "@/data/projects";
 
 const categories = [
@@ -39,6 +40,67 @@ const categories = [
       "Architectures RAG, vectorisation, intégration de LLM locaux/API et chaînes de traitement automatisées.",
   },
 ];
+
+function CategoryRow({ cat }: { cat: (typeof categories)[0] }) {
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setMousePos({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    });
+  };
+
+  return (
+    <div
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="relative p-6 md:p-12 transition-colors duration-300 space-y-6 overflow-hidden group"
+    >
+      {/* Spotlight radial améthyste qui suit le curseur */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -inset-px transition-opacity duration-300"
+        style={{
+          opacity: isHovered ? 1 : 0,
+          background: `radial-gradient(450px circle at ${mousePos.x}px ${mousePos.y}px, rgba(168, 85, 247, 0.12), transparent 70%)`,
+        }}
+      />
+
+      <div className="relative z-10 flex items-baseline justify-between gap-4">
+        <span className="font-mono text-xs text-purple-400 font-bold group-hover:text-fuchsia-300 transition-colors">
+          [{cat.tag}]
+        </span>
+        <span className="font-mono text-[11px] uppercase tracking-wider text-ink/40">
+          Production ready
+        </span>
+      </div>
+
+      <div className="relative z-10">
+        <h4 className="font-display-wide text-2xl sm:text-3xl font-bold text-ink uppercase tracking-tight group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:via-purple-200 group-hover:to-fuchsia-300 transition-all">
+          {cat.title}
+        </h4>
+        <p className="mt-2 font-mono text-xs sm:text-sm text-ink/70 leading-relaxed">
+          {cat.description}
+        </p>
+      </div>
+
+      <div className="relative z-10 flex flex-wrap gap-2 pt-2">
+        {cat.skills.map((skill) => (
+          <span
+            key={skill}
+            className="px-3.5 py-1.5 rounded bg-purple-500/10 border border-purple-500/20 font-mono text-xs text-purple-300 font-medium transition-all duration-200 hover:bg-purple-500/25 hover:border-purple-400/50 hover:text-white hover:scale-105 cursor-default select-none shadow-sm hover:shadow-[0_0_12px_rgba(168,85,247,0.3)]"
+          >
+            {skill}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default function Stack() {
   return (
@@ -106,39 +168,7 @@ export default function Stack() {
           </div>
 
           {categories.map((cat) => (
-            <div
-              key={cat.title}
-              className="p-6 md:p-12 hover:bg-purple-950/10 transition-colors space-y-6"
-            >
-              <div className="flex items-baseline justify-between gap-4">
-                <span className="font-mono text-xs text-purple-400 font-bold">
-                  [{cat.tag}]
-                </span>
-                <span className="font-mono text-[11px] uppercase tracking-wider text-ink/40">
-                  Production ready
-                </span>
-              </div>
-
-              <div>
-                <h4 className="font-display-wide text-2xl sm:text-3xl font-bold text-ink uppercase tracking-tight">
-                  {cat.title}
-                </h4>
-                <p className="mt-2 font-mono text-xs sm:text-sm text-ink/70 leading-relaxed">
-                  {cat.description}
-                </p>
-              </div>
-
-              <div className="flex flex-wrap gap-2 pt-2">
-                {cat.skills.map((skill) => (
-                  <span
-                    key={skill}
-                    className="px-3.5 py-1.5 rounded bg-purple-500/10 border border-purple-500/20 font-mono text-xs text-purple-300 font-medium"
-                  >
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            </div>
+            <CategoryRow key={cat.title} cat={cat} />
           ))}
         </div>
 

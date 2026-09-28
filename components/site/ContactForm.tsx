@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 const subjects = [
   { value: "alternance", label: "Alternance" },
@@ -16,12 +17,14 @@ export default function ContactForm() {
   const [subject, setSubject] = useState("alternance");
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const [error, setError] = useState("");
+  const { toast } = useToast();
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = new FormData(e.currentTarget);
     setStatus("sending");
     setError("");
+
     try {
       const res = await fetch("/api/sendEmail", {
         method: "POST",
@@ -34,12 +37,24 @@ export default function ContactForm() {
           website: form.get("website"),
         }),
       });
+
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.error || "L'envoi a échoué.");
+
       setStatus("sent");
+      toast({
+        title: "Message transmis",
+        description: "Votre email est bien arrivé. Je vous réponds au plus vite.",
+      });
     } catch (err) {
-      setError(err instanceof Error ? err.message : "L'envoi a échoué.");
+      const msg = err instanceof Error ? err.message : "L'envoi a échoué.";
+      setError(msg);
       setStatus("error");
+      toast({
+        variant: "destructive",
+        title: "Erreur d'envoi",
+        description: msg,
+      });
     }
   };
 

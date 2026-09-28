@@ -2,6 +2,16 @@
 
 import { experiences, education } from "@/data/projects";
 
+type ExperienceItem = {
+  title: string;
+  period: string;
+  place: string;
+  description?: string;
+  highlights?: string[];
+  points?: string[];
+  details?: string[];
+};
+
 export default function Timeline() {
   return (
     <section id="parcours" className="border-t border-border w-full bg-paper">
@@ -61,12 +71,12 @@ export default function Timeline() {
             <span className="font-mono text-[11px] text-ink/40">Détails de parcours</span>
           </div>
 
-          {experiences.map((exp: any, idx: number) => {
+          {(experiences as ExperienceItem[]).map((exp, idx) => {
             const listItems: string[] = exp.highlights || exp.points || exp.details || [];
 
             return (
-              <div key={idx} className="p-6 md:p-12 hover:bg-purple-950/10 transition-colors">
-                <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 mb-3">
+              <div key={idx} className="p-6 md:p-12 space-y-4">
+                <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
                   <span className="font-display-wide text-2xl sm:text-3xl font-bold text-ink">
                     {exp.title}
                   </span>
@@ -75,17 +85,17 @@ export default function Timeline() {
                   </span>
                 </div>
 
-                <p className="font-mono text-xs text-ink/50 mb-4">{exp.place}</p>
+                <p className="font-mono text-xs text-ink/50">{exp.place}</p>
 
                 {exp.description && (
-                  <p className="text-sm sm:text-base text-ink/80 leading-relaxed mb-6 font-mono">
+                  <p className="text-sm sm:text-base text-ink/80 leading-relaxed font-mono">
                     {exp.description}
                   </p>
                 )}
 
                 {listItems.length > 0 && (
-                  <ul className="space-y-4 font-mono border-l-2 border-purple-500/50 pl-5 my-4">
-                    {listItems.map((item: string, hIdx: number) => {
+                  <ul className="space-y-4 font-mono border-l-2 border-purple-500/40 pl-5 pt-2">
+                    {listItems.map((item, hIdx) => {
                       const separatorIndex = item.indexOf(":");
                       const hasColon = separatorIndex !== -1;
                       const titlePart = hasColon ? item.slice(0, separatorIndex).trim() : "";

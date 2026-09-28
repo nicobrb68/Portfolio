@@ -93,7 +93,7 @@ export default function Hero() {
         <LightPillar
           topColor="#c084fc"
           bottomColor="#4c1d95"
-          intensity={0.17}
+          intensity={0.16}
           rotationSpeed={0.4}
           pillarWidth={4.5}
           pillarRotation={25}

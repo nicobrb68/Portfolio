@@ -59,10 +59,10 @@ export default function Timeline() {
                 <ul className="space-y-4 font-mono border-l-2 border-purple-500/40 pl-5">
                   {exp.highlights.map((h, hIdx) => {
                     // Découpe propre au premier ":" peu importe les espaces autour
-                    const parts = h.split(/:(.*)/s);
-                    const hasColon = parts.length > 1;
-                    const head = parts[0]?.trim();
-                    const tail = parts[1]?.trim();
+                    const colonIndex = h.indexOf(":");
+                    const hasColon = colonIndex !== -1;
+                    const head = hasColon ? h.slice(0, colonIndex).trim() : h;
+                    const tail = hasColon ? h.slice(colonIndex + 1).trim() : "";
 
                     return (
                       <li key={hIdx} className="leading-relaxed text-sm sm:text-base">

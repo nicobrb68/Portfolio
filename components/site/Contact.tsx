@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useState } from "react";
 import { profile } from "@/data/projects";
 import ContactForm from "@/components/site/ContactForm";
 
@@ -14,11 +14,20 @@ const contactLinks = [
 ];
 
 export default function Contact() {
-  const root = useRef<HTMLElement>(null);
+  const [copied, setCopied] = useState(false);
+
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(profile.email);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Repli si le presse-papier n'est pas autorisé
+    }
+  };
 
   return (
     <section
-      ref={root}
       id="contact"
       className="relative min-h-screen flex flex-col justify-between border-t border-border bg-paper w-full overflow-hidden"
     >
@@ -39,7 +48,7 @@ export default function Contact() {
           <span>Alternance 2027</span>
         </div>
 
-        {/* Titre monumental qui prend toute la largeur de l'écran */}
+        {/* Titre monumental pleine largeur */}
         <div className="px-6 pt-12 pb-8 md:px-12 md:pt-16 border-b border-border">
           <h2 className="font-display font-black uppercase tracking-tight text-ink text-[13vw] sm:text-[11vw] lg:text-[9.5vw] leading-[0.85] select-none">
             Prenons <br />
@@ -49,7 +58,7 @@ export default function Contact() {
           </h2>
         </div>
 
-        {/* Grille pleine largeur : Métriques d'alternance façon console de bord */}
+        {/* Grille pleine largeur : Métriques statiques (pas d'hover trompeur) */}
         <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-border border-b border-border font-mono">
           <div className="p-6 md:p-10 flex flex-col justify-between bg-card/20">
             <span className="text-xs uppercase tracking-wider text-purple-400 font-bold">
@@ -93,14 +102,24 @@ export default function Contact() {
           </div>
         </div>
 
-        {/* Section interaction : 50/50 plein écran */}
+        {/* Section interaction : 50/50 */}
         <div className="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-border">
-          {/* Colonne gauche : Coordonnées & Liens */}
+          {/* Colonne gauche : Adresse directe avec action de copie + Liens */}
           <div className="lg:col-span-6 p-6 md:p-12 flex flex-col justify-between space-y-12">
             <div>
-              <p className="font-mono text-xs uppercase tracking-wider text-purple-400 font-bold mb-4">
-                Adresse électronique directe
-              </p>
+              <div className="flex items-center justify-between mb-4">
+                <p className="font-mono text-xs uppercase tracking-wider text-purple-400 font-bold">
+                  Adresse électronique directe
+                </p>
+                <button
+                  type="button"
+                  onClick={copyEmail}
+                  className="font-mono text-[11px] uppercase tracking-wider px-2.5 py-1 rounded border border-border hover:border-purple-500 hover:text-purple-300 transition-colors cursor-pointer"
+                >
+                  {copied ? "Copié !" : "Copier"}
+                </button>
+              </div>
+
               <a
                 href={`mailto:${profile.email}`}
                 className="group block font-display-wide text-2xl sm:text-4xl lg:text-[2.6vw] font-bold text-ink tracking-tight hover:text-purple-300 transition-colors break-words leading-tight"
@@ -110,7 +129,7 @@ export default function Contact() {
               </a>
             </div>
 
-            {/* Liens avec séparateurs francs */}
+            {/* Liens cliquables avec flèche active */}
             <div className="divide-y divide-border border-y border-border">
               {contactLinks.map((link) => (
                 <a
@@ -118,7 +137,7 @@ export default function Contact() {
                   href={link.href}
                   target={link.href.startsWith("http") || link.href.endsWith(".pdf") ? "_blank" : undefined}
                   rel="noreferrer"
-                  className="group py-5 flex items-center justify-between text-ink hover:text-purple-400 transition-colors"
+                  className="group py-5 flex items-center justify-between text-ink hover:text-purple-400 transition-colors cursor-pointer"
                 >
                   <span className="font-mono text-xs uppercase tracking-wider text-ink/60 group-hover:text-purple-300">
                     {link.label}
@@ -134,7 +153,7 @@ export default function Contact() {
             </div>
           </div>
 
-          {/* Colonne droite : Formulaire structuré */}
+          {/* Colonne droite : Formulaire */}
           <div className="lg:col-span-6 p-6 md:p-12 bg-card/10">
             <p className="font-mono text-xs uppercase tracking-wider text-purple-400 font-bold mb-8">
               Formulaire de transmission direct
@@ -144,7 +163,7 @@ export default function Contact() {
         </div>
       </div>
 
-      {/* Footer technique pleine largeur */}
+      {/* Footer technique */}
       <footer className="w-full border-t border-border px-6 py-6 md:px-12 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs text-ink/50 bg-paper">
         <div>© {new Date().getFullYear()} {profile.name} · 42 Mulhouse</div>
         <div className="flex items-center gap-8">
