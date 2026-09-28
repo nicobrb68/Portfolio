@@ -1,215 +1,221 @@
 "use client";
 
 import { useLayoutEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
-import { profile, projects42, type Project } from "@/data/projects";
-import Gallery from "@/components/site/Gallery";
+import { projects42 } from "@/data/projects";
 
-const tagLabels: Record<string, string> = {
-  web: "Web",
-  backend: "Backend",
-  ia: "IA",
-  systemes: "Systèmes",
-  mobile: "Mobile",
-  devops: "DevOps",
-};
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
-function Row({ project, index, open, onToggle }: { project: Project; index: number; open: boolean; onToggle: () => void }) {
-  return (
-    <li data-row className="border-t border-paper/25">
-      <button
-        onClick={onToggle}
-        aria-expanded={open}
-        className="group relative grid w-full grid-cols-[2.5rem_1fr] items-center gap-2 overflow-hidden px-4 py-4 text-left md:grid-cols-[4rem_1fr_auto] md:px-8 md:py-5"
-      >
-        <span className="absolute inset-0 origin-bottom scale-y-0 grain-bg transition-transform duration-500 ease-expo group-hover:scale-y-100" />
-        <span className="relative font-mono text-xs transition-colors group-hover:text-on-grain">{pad(index + 1)}</span>
-        <span className="relative flex flex-wrap items-center gap-x-4 gap-y-1">
-          <span
-            className="font-display text-[length:var(--fs)] transition-[transform,color] duration-500 ease-expo group-hover:translate-x-3 group-hover:text-on-grain md:text-[7vw]"
-            style={{ ["--fs" as string]: `min(12vw, calc((100vw - 6rem) / ${project.title.length * 0.6}))` }}
-          >
-            {project.title}
-          </span>
-          {project.status === "en-cours" && (
-            <span className="grain-bg flex items-center gap-2 rounded-full px-3 py-1 font-mono text-[10px] uppercase tracking-wider text-on-grain group-hover:!bg-none group-hover:bg-ink group-hover:text-paper">
-              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-current" />
-              En cours
-            </span>
-          )}
-        </span>
-        <span className="relative hidden text-right font-mono text-xs uppercase tracking-wider transition-colors group-hover:text-on-grain md:block">
-          <span className="block">{project.tags.map((t) => tagLabels[t]).join(" · ")}</span>
-          <span className="block opacity-60">{project.period}</span>
-        </span>
-      </button>
-
-      <div
-        className="grid transition-[grid-template-rows] duration-700 ease-expo"
-        style={{ gridTemplateRows: open ? "1fr" : "0fr" }}
-      >
-        <div className="overflow-hidden">
-          <div className="grid gap-8 px-4 pb-10 pt-2 md:grid-cols-12 md:px-8 md:pb-14">
-            {project.images?.length ? (
-              <div className="md:col-span-8 md:col-start-2">
-                <Gallery project={project} sizes="(min-width: 768px) 70vw, 100vw" />
-              </div>
-            ) : null}
-            <div className="md:col-span-5 md:col-start-2">
-              <p className="mb-4 font-mono text-[11px] uppercase tracking-wider text-paper/60">{project.context}</p>
-              <p className="font-display-wide text-3xl md:text-[2.6vw]">{project.tagline}</p>
-            </div>
-            <div className="md:col-span-5 md:col-start-8">
-              <p className="text-base leading-relaxed text-paper/80 md:text-lg">{project.description}</p>
-              <ul className="mt-6 space-y-2">
-                {project.highlights.map((h) => (
-                  <li key={h} className="flex gap-3 text-sm md:text-base">
-                    <span className="text-grain">*</span>
-                    {h}
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-6 flex flex-wrap gap-2">
-                {project.stack.map((s) => (
-                  <span key={s} className="border border-paper/30 px-2.5 py-1 font-mono text-[11px] uppercase tracking-wider">
-                    {s}
-                  </span>
-                ))}
-              </div>
-              {project.links?.github && (
-                <a
-                  href={project.links.github}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mt-8 inline-block bg-paper px-5 py-3 font-mono text-xs uppercase tracking-wider text-ink transition-colors hover:grain-bg hover:text-on-grain"
-                >
-                  Voir sur GitHub ↗
-                </a>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
-    </li>
-  );
-}
-
 export default function Projects42() {
   const root = useRef<HTMLElement>(null);
-  const [open, setOpen] = useState<string | null>(projects42[0].slug);
-  const featured = projects42.filter((p) => p.featured);
-  const others = projects42.filter((p) => !p.featured);
+  // Initialisé avec le premier projet ouvert par défaut
+  const [activeSlug, setActiveSlug] = useState<string | null>(projects42[0]?.slug ?? null);
 
   useLayoutEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce || !root.current) return;
 
     const ctx = gsap.context(() => {
-      gsap.from("[data-title-char]", {
-        yPercent: 110,
-        duration: 1.2,
-        ease: "expo.out",
-        stagger: 0.04,
-        scrollTrigger: { trigger: "[data-title]", start: "top 85%" },
-      });
-      gsap.utils.toArray<HTMLElement>("[data-row], [data-card]").forEach((el) => {
-        gsap.from(el, {
-          y: 40,
-          opacity: 0,
-          duration: 1,
-          ease: "expo.out",
-          scrollTrigger: { trigger: el, start: "top 92%" },
-        });
+      ScrollTrigger.create({
+        trigger: root.current,
+        start: "top 70%",
+        once: true,
+        onEnter: () => {
+          // Force l'ouverture du premier projet dès que la section entre dans l'écran
+          setActiveSlug(projects42[0]?.slug ?? null);
+        },
       });
     }, root);
+
     return () => ctx.revert();
   }, []);
 
   return (
-    <section ref={root} id="projets-42" className="on-ink bg-ink pb-24 pt-24 text-paper md:pt-32">
-      <div className="mb-12 grid gap-6 px-4 md:mb-20 md:grid-cols-12 md:px-8">
-        <p className="font-mono text-[11px] uppercase tracking-wider md:col-span-12 md:text-xs">
-          (03) Tronc commun 42 Next — École 42 Mulhouse
-        </p>
-        <h2
-          data-title
-          className="font-display flex flex-wrap items-end gap-x-[0.12em] text-[20vw] md:col-span-12 md:text-[15.5vw]"
-          aria-label="Projets 42"
-        >
-          <span className="line-mask">
-            {"Projets".split("").map((c, i) => (
-              <span key={i} data-title-char className="inline-block">
-                {c}
-              </span>
-            ))}
-          </span>
-          <span className="line-mask text-grain">
-            {"42".split("").map((c, i) => (
-              <span key={i} data-title-char className="inline-block">
-                {c}
-              </span>
-            ))}
-          </span>
-        </h2>
-        <div className="md:col-span-5 md:col-start-8">
-          <p className="text-lg leading-snug text-paper/80 md:text-xl">
-            Pas de cours, pas de prof : du peer learning, de la peer evaluation et des projets à rendre.
-            C&apos;est là que j&apos;ai appris les systèmes, le réseau, la concurrence et l&apos;IA.
-          </p>
+    <section ref={root} id="projets-42" className="border-t border-border px-4 py-24 md:px-8 md:py-32">
+      <div className="max-w-7xl mx-auto">
+        
+        {/* Titre ultra-impactant avec gros contraste */}
+        <div className="mb-16 md:mb-24">
+          <div className="flex items-center justify-between gap-4 border-b border-border pb-6 font-mono text-xs uppercase tracking-wider text-ink/60">
+            <span className="flex items-center gap-2">
+              <span className="h-2 w-2 rounded-full bg-purple-500 animate-pulse" />
+              (03) Projets majeurs · Cursus 42
+            </span>
+            <span>{pad(projects42.length)} Réalisations</span>
+          </div>
+
+          <div className="mt-8 flex flex-col lg:flex-row lg:items-end justify-between gap-8">
+            <h2 className="font-display text-5xl sm:text-7xl md:text-8xl font-black uppercase tracking-tight text-ink leading-[0.9]">
+            Projets <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 via-fuchsia-400 to-indigo-400">
+              Systèmes & Infra
+            </span>
+          </h2>
+            <p className="max-w-md font-mono text-xs sm:text-sm text-ink/70 leading-relaxed">
+              Virtualisation conteneurisée, protocoles réseaux bas niveau, concurrence POSIX et architectures d&apos;agents validés sur le cursus 42 Mulhouse.
+            </p>
+          </div>
         </div>
-      </div>
 
-      <ul className="border-b border-paper/25">
-        {featured.map((p, i) => (
-          <Row key={p.slug} project={p} index={i} open={open === p.slug} onToggle={() => setOpen(open === p.slug ? null : p.slug)} />
-        ))}
-      </ul>
+        {/* Lignes interactives de projets */}
+        <div className="divide-y divide-border border-y border-border">
+          {projects42.map((p, i) => {
+            const isOpened = activeSlug === p.slug;
 
-      <div className="mt-20 px-4 md:mt-28 md:px-8">
-        <p className="mb-6 font-mono text-[11px] uppercase tracking-wider md:text-xs">Aussi à 42</p>
-        <div className="grid gap-px bg-paper/25 sm:grid-cols-2 lg:grid-cols-4">
-          {others.map((p) => {
-            const Tag = p.links?.github ? "a" : "div";
             return (
-              <Tag
+              <div
                 key={p.slug}
-                data-card
-                {...(p.links?.github ? { href: p.links.github, target: "_blank", rel: "noreferrer" } : {})}
-                className="group flex min-h-[15rem] flex-col justify-between bg-ink p-5 transition-colors hover:grain-bg hover:text-on-grain"
+                className={`group relative overflow-hidden transition-colors duration-500 ${
+                  isOpened ? "bg-purple-950/20" : ""
+                }`}
               >
-                <div className="flex items-start justify-between font-mono text-[11px] uppercase tracking-wider opacity-60">
-                  <span>{p.period}</span>
-                  {p.links?.github && <span className="transition-transform group-hover:-translate-y-1 group-hover:translate-x-1">↗</span>}
+                {/* Effet aurore boréale au survol */}
+                <div
+                  aria-hidden
+                  className={`pointer-events-none absolute inset-0 -z-10 transition-all duration-700 ease-out ${
+                    isOpened
+                      ? "opacity-60 scale-100"
+                      : "opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-105"
+                  }`}
+                >
+                  <div className="absolute -top-1/2 left-1/4 h-[200%] w-1/2 bg-gradient-to-r from-purple-600/30 via-fuchsia-500/35 to-indigo-600/30 blur-3xl" />
+                  <div className="absolute -bottom-1/2 right-10 h-[180%] w-1/3 bg-gradient-to-l from-violet-600/25 via-purple-700/20 to-transparent blur-2xl" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-purple-950/40 via-violet-900/30 to-purple-950/40 mix-blend-screen" />
                 </div>
-                <div>
-                  <h3 className="font-display mb-3 text-5xl">{p.title}</h3>
-                  <p className="text-sm leading-snug opacity-80">{p.tagline}</p>
-                  <p className="mt-3 font-mono text-[11px] uppercase tracking-wider opacity-60">{p.stack.join(" · ")}</p>
-                </div>
-              </Tag>
+
+                {/* Bordure lumineuse d'accent à gauche */}
+                <span className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-purple-400 via-fuchsia-400 to-indigo-500 scale-y-0 group-hover:scale-y-100 transition-transform duration-300 origin-top shadow-[0_0_15px_rgba(168,85,247,0.9)]" />
+
+                <button
+                  type="button"
+                  onClick={() => setActiveSlug(isOpened ? null : p.slug)}
+                  className="w-full py-8 md:py-12 flex flex-col md:flex-row md:items-center justify-between gap-6 text-left cursor-pointer px-4 md:px-8 transition-all relative z-10"
+                >
+                  <div className="flex items-baseline gap-6 md:gap-12 transition-transform duration-300 group-hover:translate-x-3">
+                    <span className="font-mono text-sm md:text-lg text-purple-400 font-bold group-hover:text-fuchsia-300 transition-colors">
+                      {pad(i + 1)}
+                    </span>
+                    <div>
+                      <h3 className="font-display-wide text-3xl sm:text-5xl md:text-6xl font-black tracking-tight text-ink group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:via-purple-200 group-hover:to-fuchsia-300 transition-all uppercase">
+                        {p.title}
+                      </h3>
+                      <p className="mt-2 font-mono text-xs sm:text-sm text-ink/60 group-hover:text-ink/80 transition-colors">
+                        {p.tagline}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-6 self-start md:self-center font-mono text-xs">
+                    <span className="hidden sm:inline-block px-3.5 py-1.5 rounded-full border border-border text-ink/80 bg-card/60 backdrop-blur-sm group-hover:border-purple-500/50 group-hover:text-purple-300 transition-colors">
+                      {p.context}
+                    </span>
+                    <span
+                      className={`text-purple-400 font-mono text-2xl transition-all duration-300 ${
+                        isOpened ? "rotate-90 text-fuchsia-400" : "group-hover:translate-x-1.5 group-hover:text-fuchsia-300"
+                      }`}
+                    >
+                      →
+                    </span>
+                  </div>
+                </button>
+
+                {/* Volet dépliable avec galerie d'images propre */}
+                {isOpened && (
+                  <div className="pb-12 pt-6 px-4 md:px-8 grid gap-8 lg:grid-cols-12 border-t border-border/60 relative z-10 bg-paper/60 backdrop-blur-md animate-in fade-in duration-300">
+                    
+                    {/* Colonne gauche : Description & Highlights */}
+                    <div className="lg:col-span-6 space-y-6">
+                      <p className="text-base sm:text-lg leading-relaxed text-ink/90">
+                        {p.description}
+                      </p>
+
+                      {p.highlights && (
+                        <div className="space-y-3 pt-2">
+                          <p className="font-mono text-xs uppercase tracking-wider text-purple-400 font-bold">
+                            Architecture & Compétences validées :
+                          </p>
+                          <ul className="space-y-2 font-mono text-xs sm:text-sm text-ink/80">
+                            {p.highlights.map((h, idx) => (
+                              <li key={idx} className="flex items-start gap-3">
+                                <span className="text-purple-400 font-bold mt-0.5">›</span>
+                                <span>{h}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+
+                      <div className="pt-4 flex flex-wrap items-center gap-3">
+                        {p.links?.github && (
+                          <a
+                            href={p.links.github}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="inline-flex items-center gap-2 font-mono text-xs font-bold text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 px-5 py-3 rounded-lg transition-all shadow-lg shadow-purple-600/30 active:scale-95"
+                          >
+                            Consulter le repository GitHub ↗
+                          </a>
+                        )}
+                        {p.links?.live && (
+                          <a
+                            href={p.links.live}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="inline-flex items-center gap-2 font-mono text-xs font-bold text-ink border border-border hover:border-purple-500 px-5 py-3 rounded-lg transition-all bg-card/40 active:scale-95"
+                          >
+                            Démo en ligne ↗
+                          </a>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Colonne droite : Images sans bug de ratio + Stack */}
+                    <div className="lg:col-span-6 flex flex-col justify-between gap-6 lg:border-l lg:border-border/60 lg:pl-8">
+                      {p.images && p.images.length > 0 && (
+                        <div className="space-y-3">
+                          <p className="font-mono text-xs uppercase tracking-wider text-ink/50">
+                            Aperçu de l&apos;interface & infrastructure
+                          </p>
+                          <div className="relative aspect-video w-full rounded-2xl overflow-hidden border border-border bg-black/40 shadow-xl shadow-purple-950/40">
+                            <Image
+                              src={p.images[0]}
+                              alt={p.title}
+                              fill
+                              sizes="(max-width: 1024px) 100vw, 50vw"
+                              className="object-contain sm:object-cover"
+                            />
+                          </div>
+                        </div>
+                      )}
+
+                      <div className="pt-2">
+                        <p className="font-mono text-xs uppercase tracking-wider text-ink/50 mb-3">
+                          Environnement technique
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                          {p.stack.map((tech) => (
+                            <span
+                              key={tech}
+                              className="px-3 py-1 rounded-md bg-purple-500/15 border border-purple-500/30 font-mono text-xs text-purple-300 font-medium"
+                            >
+                              {tech}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                )}
+              </div>
             );
           })}
-          <a
-            data-card
-            href={profile.github}
-            target="_blank"
-            rel="noreferrer"
-            className="group flex min-h-[15rem] flex-col justify-between bg-ink p-5 transition-colors hover:grain-bg hover:text-on-grain"
-          >
-            <div className="flex items-start justify-between font-mono text-[11px] uppercase tracking-wider opacity-60">
-              <span>Et le reste</span>
-              <span className="transition-transform group-hover:-translate-y-1 group-hover:translate-x-1">↗</span>
-            </div>
-            <div>
-              <h3 className="font-display mb-3 text-5xl">
-                Tout mon <span className="text-grain group-hover:text-on-grain group-hover:[background:none]">GitHub</span>
-              </h3>
-              <p className="text-sm leading-snug opacity-80">Tous les projets, les piscines et ce qui est en cours.</p>
-            </div>
-          </a>
         </div>
       </div>
     </section>

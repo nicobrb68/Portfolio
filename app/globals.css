@@ -1,63 +1,48 @@
-@import "@fontsource-variable/archivo/wdth.css";
-@import "@fontsource-variable/jetbrains-mono/index.css";
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --paper: 0 0% 97%;
-    --ink: 0 0% 4%;
-    /* Couleur unie de repli pour l'accent (le vrai accent est le dégradé granuleux) */
-/* Couleur unie de repli pour l'accent (Cyan électrique) */
-    --accent: 185 85% 50%;
-    --accent-fg: 0 0% 4%;
+    /* Mode sombre par défaut - Violet profond & Nuit ardoise */
+    --paper: 250 24% 9%;       /* Fond sombre violet nuit (#110e1b) */
+    --ink: 250 40% 98%;         /* Texte clair (#f8fafc) */
+    --accent: 265 89% 66%;      /* Violet néon (#a855f7) */
+    --accent-fg: 250 24% 9%;
 
-    /* Dégradé granuleux : Cyan, Indigo, Violet, Émeraude */
-    --g1: #00f2fe; /* Cyan éclatant */
-    --g2: #4facfe; /* Bleu électrique */
-    --g3: #6b21a8; /* Violet profond */
-    --g4: #3b82f6; /* Bleu cobalt */
-    --g5: #10b981; /* Vert émeraude / tech */
-    --noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-
-    /* Variables shadcn/ui conservées pour les composants existants */
     --background: var(--paper);
     --foreground: var(--ink);
-    --card: var(--paper);
+    --card: 252 20% 14%;
     --card-foreground: var(--ink);
     --popover: var(--paper);
     --popover-foreground: var(--ink);
     --primary: var(--ink);
     --primary-foreground: var(--paper);
-    --secondary: 0 0% 90%;
+    --secondary: 252 20% 15%;
     --secondary-foreground: var(--ink);
-    --muted: 0 0% 90%;
-    --muted-foreground: 0 0% 35%;
+    --muted: 252 15% 22%;
+    --muted-foreground: 250 15% 65%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
-    --border: 0 0% 5%;
-    --input: 0 0% 5%;
+    --border: 252 15% 22%;
+    --input: 252 15% 22%;
     --ring: var(--accent);
-    --radius: 0rem;
+    --radius: 0.75rem;
   }
 
-  /* Mode sombre */
-  .dark {
-    --paper: 0 0% 5%;
-    --ink: 0 0% 95%;
-    --secondary: 0 0% 14%;
-    --muted: 0 0% 14%;
-    --muted-foreground: 0 0% 65%;
-    --border: 0 0% 95%;
-    --input: 0 0% 95%;
+  .light {
+    --paper: 250 30% 98%;
+    --ink: 250 40% 10%;
+    --secondary: 250 20% 92%;
+    --muted: 250 15% 90%;
+    --muted-foreground: 250 10% 40%;
+    --border: 250 20% 88%;
+    --input: 250 20% 88%;
   }
 
-  /* En mode sombre, les sections « encre » restent sombres, un ton au-dessus du fond */
-  .dark .on-ink {
-    --ink: 0 0% 11%;
-    --paper: 0 0% 95%;
+  .on-ink {
+    --ink: 252 20% 14%;
+    --paper: 250 40% 98%;
   }
 
   * {
@@ -81,131 +66,36 @@
 }
 
 @layer utilities {
-  /* Typo display : Archivo condensé en graisse maximale */
-  .font-display {
-    font-family: "Archivo Variable", sans-serif;
-    font-weight: 900;
-    font-stretch: 72%;
-    letter-spacing: -0.02em;
-    line-height: 0.82;
-    text-transform: uppercase;
+  .grain-bg {
+    background: linear-gradient(135deg, #7c3aed 0%, #a855f7 50%, #6366f1 100%);
   }
 
-  .font-display-wide {
-    font-family: "Archivo Variable", sans-serif;
-    font-weight: 900;
-    font-stretch: 125%;
-    letter-spacing: -0.03em;
-    line-height: 0.9;
-    text-transform: uppercase;
-  }
-
-  .text-outline {
-    color: transparent;
-    -webkit-text-stroke: 0.02em currentColor;
-  }
-
-  /* Dégradé granuleux en ondes, utilisé comme couleur d'accent */
-  .grain-bg,
-  .grain-hover,
   .text-grain,
   .text-grain [data-char],
   .text-grain [data-title-char] {
-    background-color: var(--g3);
-    background-image: var(--noise),
-      repeating-radial-gradient(
-        circle at 15% 140%,
-        var(--g1) 0,
-        var(--g2) 7rem,
-        var(--g3) 14rem,
-        var(--g4) 20rem,
-        var(--g5) 21rem,
-        var(--g4) 22rem,
-        var(--g3) 28rem,
-        var(--g2) 35rem,
-        var(--g1) 42rem
-      );
-    background-size: 180px 180px, 160% 160%;
-    background-blend-mode: soft-light, normal;
-    animation: grain-drift 16s ease-in-out infinite alternate;
-  }
-
-  /* Les lettres animées portent chacune leur propre dégradé (le clip ne traverse pas les transforms) */
-  .text-grain,
-  .text-grain [data-char],
-  .text-grain [data-title-char] {
+    background: linear-gradient(135deg, #c084fc 0%, #818cf8 100%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
   }
 
-  /* Texte qui se remplit du dégradé au survol : le dégradé est toujours là derrière le texte,
-     seule la couleur change, donc l'aller et le retour sont fluides */
-  .grain-hover {
-    -webkit-background-clip: text;
-    background-clip: text;
-    transition: color 0.35s ease;
-  }
   .grain-hover:hover {
-    color: transparent;
-  }
-
-  /* Variante resserrée pour les petits éléments : ondes plus fines, défilement plus visible */
-  .grain-tight,
-  .grain-tight [data-char] {
-    background-image: var(--noise),
-      repeating-radial-gradient(
-        circle at 15% 140%,
-        var(--g1) 0,
-        var(--g2) 0.6rem,
-        var(--g3) 1.2rem,
-        var(--g4) 1.7rem,
-        var(--g5) 1.8rem,
-        var(--g4) 1.9rem,
-        var(--g3) 2.4rem,
-        var(--g2) 3rem,
-        var(--g1) 3.6rem
-      );
-    background-size: 180px 180px, 400% 400%;
-    animation: grain-drift 8s ease-in-out infinite alternate;
-  }
-
-  /* Masque des lettres animées, avec de la marge en haut pour ne pas couper les accents */
-  .line-mask {
-    display: block;
-    overflow: hidden;
-    padding-top: 0.14em;
-    margin-top: -0.14em;
-    padding-bottom: 0.04em;
+    color: #c084fc;
   }
 }
 
-@keyframes grain-drift {
-  from {
-    background-position: 0 0, 0% 0%;
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
   }
-  to {
-    background-position: 0 0, 100% 60%;
+  100% {
+    transform: translateX(-50%);
   }
 }
 
-/* Lenis */
-html.lenis,
-html.lenis body {
-  height: auto;
-}
-.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
-}
-.lenis.lenis-stopped {
-  overflow: hidden;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
-  }
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 28s linear infinite;
+  pointer-events: none; /* Ignore tout hover parasite */
 }

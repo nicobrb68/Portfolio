@@ -6,7 +6,6 @@ export type ProjectTag = "web" | "backend" | "ia" | "systemes" | "mobile" | "dev
 export type Project = {
   slug: string;
   title: string;
-  /** Mis en avant (grande carte avec détails) ou carte compacte */
   featured: boolean;
   period: string;
   status?: "en-cours" | "production";
@@ -17,7 +16,6 @@ export type Project = {
   stack: string[];
   tags: ProjectTag[];
   links?: { site?: string; github?: string };
-  /** Captures d'écran dans /public/projects (la première est l'image principale) */
   images?: string[];
 };
 
@@ -27,64 +25,92 @@ export type Experience = {
   place: string;
   description?: string;
   highlights?: string[];
-  /** Ligne discrète, sans détails */
   minor?: boolean;
 };
 
 export const profile = {
   name: "Nicolas Barbosa",
-  role: "Développeur logiciel",
-  focus: ["DevOps", "Backend", "Systèmes & IA"],
-  status: "En recherche d'alternance / stage",
-  alternance: {
-    start: "2027",
-    rhythm: "3 semaines en entreprise / 1 semaine à l'école",
-    duration: "2 ans",
-  },
-  location: "Grand-Est",
+  role: "Étudiant Développeur & DevOps / Data et IA",
+  titleTarget: "Expert en architecture informatique (RNCP 7 / Master Bac+5)",
+  location: "Saint-Louis, France",
+  phone: "06 32 50 35 56",
+  birthdate: "1998-10-04",
   email: "nicolas.barbosa68210@gmail.com",
-  phone: "",
-  linkedin: "https://www.linkedin.com/in/nicolas-barbosa68",
-  github: "https://github.com/nicobrb68",
   cv: "/CV_Barbosa_Nicolas_Devops.pdf",
-  birthDate: "1998-10-04",
-  languages: ["Français (natif)", "Anglais (technique)"],
-  interests: ["Développement logiciel", "Nouvelles technologies", "Open source"],
-};
-
-export const skills = {
-  "Systèmes & Cloud": ["Linux (Debian)", "Docker", "Docker Compose", "Virtualisation", "Bash"],
-  Langages: ["C", "Python", "Rust", "TypeScript", "SQL"],
-  "Réseaux & Sécu": ["TCP/IP", "Routage IPv4", "SSH", "UFW", "Durcissement OS"],
-  "Architecture & Concurrence": ["Multithreading", "Mutex / POSIX", "Microservices", "REST & WebSocket"],
-  "Outils & IA": ["Git", "GitHub Actions / CI", "PostgreSQL", "Agents IA & LLM", "RAG"],
+  github: "https://github.com/nicobrb68",
+  linkedin: "https://www.linkedin.com/in/nicolas-barbosa-4b928320b/",
+  alternance: {
+    start: "Janvier 2027",
+    duration: "24 mois",
+    rhythm: "3 sem. entreprise / 1 sem. école",
+  },
+  skills: {
+    systemAndCloud: ["Linux (Debian)", "Docker", "Docker Compose"],
+    scriptingAndCode: ["Bash", "Python", "C", "SQL"],
+    networkAndSecurity: ["SSH", "UFW", "Git"],
+    aiAndTools: ["Intégration LLM", "APIs", "RAG"],
+    devopsAndArch: ["CI/CD", "Orchestration de conteneurs", "Monitoring"],
+  },
+  languages: ["Français (Natif)", "Anglais (B2)"],
+  interests: ["Football", "Voyage", "Padel"],
 };
 
 export const experiences: Experience[] = [
   {
-    period: "2025 — aujourd'hui",
-    title: "Expert en architecture informatique",
-    place: "École 42 Mulhouse",
+    period: "Jul 2025 — Aujourd'hui",
+    title: "Formation Expert en Architecture Informatique",
+    place: "42 Mulhouse · RNCP 7 / Master Bac+5",
     description:
-      "Formation en peer-learning de niveau RNCP 7. Systèmes d'exploitation, programmation concurrente en C, conteneurisation Docker, automatisation Bash/Python et agents IA. En tête d'avancement de promotion.",
+      "Formation d'ingénierie intensive basée sur la pratique, le peer-learning et la résolution de problématiques complexes sans cours magistraux.",
     highlights: [
-      "Administration système Linux & durcissement d'environnements",
-      "Orchestration et déploiement de microservices Docker",
-      "Développement système bas niveau et gestion mémoire en C",
+      "Systèmes & Virtualisation : Installation et durcissement d'environnements Linux (Debian) sous machine virtuelle.",
+      "Conteneurisation & Déploiement : Conception et orchestration de microservices isolés avec Docker & Docker Compose.",
+      "Automatisation & Scripting : Écriture de scripts Bash et Python pour automatiser les tâches système, builds et validations de données.",
+      "Développement Système & Rigueur : Implémentation d'algorithmes et gestion bas niveau de la mémoire en C.",
+      "Projets IA & Automatisation : Expérimentations et intégration d'APIs de LLM / agents IA pour des pipelines d'automatisation.",
+      "Architecture de données & RAG : Structuration de données textuelles, vectorisation et mise en place d'un pipeline RAG pour l'indexation contextuelle.",
+      "Programmation concurrente & IPC : Gestion du multithreading, synchronisation par mutex et communication inter-processus en C.",
     ],
+    minor: false,
   },
   {
-    period: "2024 — 2025",
-    title: "Maintenance & équipement naval",
-    place: "Sandringham Marine — Melbourne, Australie",
-    description: "Contrôle, maintenance et fiabilisation des équipements en immersion totale anglophone.",
+    period: "Feb 2024 — Feb 2025",
+    title: "Maintenance de voiliers",
+    place: "Sandringham Marine · Melbourne, Australie",
+    description:
+      "Immersion totale en milieu anglophone technique (anglais professionnel opérationnel au quotidien).",
+    highlights: [
+      "Environnement international et travail en autonomie.",
+      "Rigueur technique et maintenance préventive.",
+    ],
+    minor: false,
   },
   {
-    period: "2019 — 2024",
-    title: "Polissage Haute Horlogerie",
-    place: "Termitech — Alle, Suisse",
-    description: "Finition haut de gamme de métaux précieux, respect scrupuleux des tolérances et contrôle qualité rigoureux.",
+    period: "Apr 2019 — Jan 2024",
+    title: "Horlogerie",
+    place: "Termitech · Alle, Suisse",
+    description:
+      "Respect scrupuleux des cahiers des charges et des processus de fabrication haut de gamme.",
+    highlights: [
+      "Précision micromécanique et tolérances strictes.",
+      "Rigueur méthodologique et contrôle qualité constant.",
+    ],
+    minor: false,
   },
+  {
+    period: "Sep 2016 — Mar 2019",
+    title: "Boulanger",
+    place: "France & Suisse",
+    description: "Fabrication, suivi rigoureux des recettes et contrôle qualité.",
+    minor: true,
+  },
+];
+
+export const education = [
+  { title: "Formation Expert en Architecture Informatique (RNCP 7 / Bac+5)", place: "42 Mulhouse", period: "2025 — En cours" },
+  { title: "CAP Pâtissier", place: "France", period: "2018" },
+  { title: "CAP Chocolatier-Confiseur", place: "France", period: "2017" },
+  { title: "CAP Boulanger", place: "France", period: "2016" },
 ];
 
 export const projects42: Project[] = [
@@ -106,7 +132,8 @@ export const projects42: Project[] = [
     ],
     stack: ["TypeScript", "Fastify", "Prisma", "PostgreSQL", "WebSocket", "Docker"],
     tags: ["web", "backend", "devops"],
-    links: { github: "" },
+    links: { github: "https://github.com/nicobrb68" },
+    images: ["/projects/transcendence-app.png"],
   },
   {
     slug: "the-answer-protocol",
@@ -270,20 +297,6 @@ export const projects42: Project[] = [
     tags: ["systemes"],
     links: { github: "https://github.com/nicobrb68/push-swap" },
   },
-  {
-    slug: "netpractice",
-    title: "NetPractice",
-    featured: false,
-    period: "Juin 2026",
-    context: "42",
-    tagline: "Configuration et routage réseau IPv4.",
-    description: "Résolution de problématiques d'adressage IP, calcul de masques et tables de routage.",
-    highlights: ["Subnetting IPv4", "Routage statique"],
-    stack: ["TCP/IP"],
-    tags: ["systemes"],
-    links: { github: "https://github.com" },
-  },
 ];
 
-// Projets personnels ou externes (optionnel)
 export const projectsPro: Project[] = [];

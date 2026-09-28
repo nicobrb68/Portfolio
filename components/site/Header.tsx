@@ -14,7 +14,6 @@ const links = [
 const pad = (n: number) => String(n).padStart(2, "0");
 
 function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
-  // Fermeture à la touche Échap
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
@@ -27,27 +26,22 @@ function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
       id="menu-mobile"
       aria-hidden={!open}
       data-lenis-prevent
-      className={`on-ink fixed inset-0 z-40 flex flex-col justify-between bg-ink px-4 pb-6 pt-20 text-paper transition-[clip-path] duration-700 ease-expo md:hidden ${
+      className={`fixed inset-0 z-40 flex flex-col justify-between bg-paper px-6 pb-8 pt-24 text-ink transition-[clip-path] duration-700 ease-out md:hidden ${
         open ? "[clip-path:inset(0_0_0_0)]" : "pointer-events-none [clip-path:inset(0_0_100%_0)]"
       }`}
     >
       <nav>
-        <ul>
+        <ul className="divide-y divide-border">
           {links.map((l, i) => (
-            <li key={l.href} className="border-t border-paper/20 last:border-b">
+            <li key={l.href}>
               <a
                 href={l.href}
                 onClick={onClose}
                 tabIndex={open ? 0 : -1}
-                className="group flex items-baseline gap-4 py-3"
+                className="group flex items-baseline gap-4 py-4"
               >
-                <span className="font-mono text-[11px] opacity-60">{pad(i + 1)}</span>
-                <span
-                  className={`font-display text-[13vw] transition-transform duration-700 ease-expo group-hover:translate-x-2 group-active:text-grain ${
-                    open ? "translate-y-0" : "translate-y-8"
-                  }`}
-                  style={{ transitionDelay: open ? `${150 + i * 60}ms` : "0ms" }}
-                >
+                <span className="font-mono text-sm opacity-50">{pad(i + 1)}</span>
+                <span className="text-3xl font-bold tracking-tight text-ink group-hover:text-sky-500 transition-colors">
                   {l.label}
                 </span>
               </a>
@@ -56,17 +50,17 @@ function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
         </ul>
       </nav>
 
-      <div className="grid grid-cols-2 gap-px border border-paper/20 bg-paper/20 font-mono text-[11px] uppercase tracking-wider">
-        <a href={profile.linkedin} target="_blank" rel="noreferrer" tabIndex={open ? 0 : -1} className="bg-ink p-4">
+      <div className="grid grid-cols-2 gap-3 font-mono text-xs uppercase tracking-wider">
+        <a href={profile.linkedin} target="_blank" rel="noreferrer" tabIndex={open ? 0 : -1} className="border border-border p-4 text-center rounded-lg hover:border-sky-500">
           LinkedIn ↗
         </a>
-        <a href={profile.github} target="_blank" rel="noreferrer" tabIndex={open ? 0 : -1} className="bg-ink p-4">
+        <a href={profile.github} target="_blank" rel="noreferrer" tabIndex={open ? 0 : -1} className="border border-border p-4 text-center rounded-lg hover:border-sky-500">
           GitHub ↗
         </a>
-        <a href={profile.cv} target="_blank" rel="noreferrer" tabIndex={open ? 0 : -1} className="bg-ink p-4">
+        <a href={profile.cv} target="_blank" rel="noreferrer" tabIndex={open ? 0 : -1} className="border border-border p-4 text-center rounded-lg hover:border-sky-500">
           CV (PDF) ↗
         </a>
-        <a href={`mailto:${profile.email}`} tabIndex={open ? 0 : -1} className="grain-bg p-4 text-on-grain">
+        <a href={`mailto:${profile.email}`} tabIndex={open ? 0 : -1} className="bg-sky-500 text-white p-4 text-center rounded-lg font-bold">
           Me contacter ↗
         </a>
       </div>
@@ -77,7 +71,6 @@ function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
 export default function Header() {
   const [open, setOpen] = useState(false);
 
-  // Bloque le défilement de la page quand le menu est ouvert
   useEffect(() => {
     document.documentElement.style.overflow = open ? "hidden" : "";
   }, [open]);
@@ -85,46 +78,49 @@ export default function Header() {
   return (
     <>
       <MobileMenu open={open} onClose={() => setOpen(false)} />
-      <header className="fixed inset-x-0 top-0 z-50 mix-blend-difference text-white">
-        <div className="flex items-center justify-between px-4 py-4 font-mono text-[11px] uppercase tracking-wider md:px-8 md:text-xs">
-          <a href="#top" onClick={() => setOpen(false)} className="font-bold">
-            NB<sup>©</sup>26
+      <header className="fixed inset-x-0 top-0 z-50 backdrop-blur-md bg-paper/80 border-b border-border/60 transition-colors">
+        <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+          <a href="#top" onClick={() => setOpen(false)} className="flex items-center gap-2">
+            <span className="h-8 w-8 rounded-lg bg-gradient-to-tr from-sky-500 to-indigo-600 text-white font-mono font-bold flex items-center justify-center text-sm shadow-md shadow-sky-500/20">
+              NB
+            </span>
+            <span className="font-bold tracking-tight text-ink text-base hidden sm:inline-block">
+              Nicolas Barbosa
+            </span>
           </a>
-          <nav className="hidden gap-8 md:flex">
+
+          <nav className="hidden md:flex items-center gap-8 font-medium text-sm text-ink/80">
             {links.map((l) => (
-              <a key={l.href} href={l.href} className="hover:line-through">
+              <a
+                key={l.href}
+                href={l.href}
+                className="hover:text-sky-500 transition-colors py-1 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-sky-500 hover:after:w-full after:transition-all"
+              >
                 {l.label}
               </a>
             ))}
           </nav>
-          <div className="flex items-center gap-5 md:gap-8">
+
+          <div className="flex items-center gap-4">
             <ThemeToggle />
-            <a href={`mailto:${profile.email}`} className="hidden items-center gap-2 md:flex">
+            <a
+              href={`mailto:${profile.email}`}
+              className="hidden sm:inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-mono text-xs font-semibold"
+            >
               <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-white" />
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
               </span>
-              {profile.status}
+              <span>Alternance 2027</span>
             </a>
+
             <button
               onClick={() => setOpen((o) => !o)}
               aria-expanded={open}
               aria-controls="menu-mobile"
-              className="flex items-center gap-2 uppercase md:hidden"
+              className="p-2 text-ink md:hidden font-mono text-xs font-bold uppercase tracking-wider"
             >
               {open ? "Fermer" : "Menu"}
-              <span aria-hidden className="relative block h-2.5 w-4">
-                <span
-                  className={`absolute left-0 top-0 h-px w-full bg-white transition-transform duration-500 ${
-                    open ? "translate-y-[5px] rotate-45" : ""
-                  }`}
-                />
-                <span
-                  className={`absolute bottom-0 left-0 h-px w-full bg-white transition-transform duration-500 ${
-                    open ? "-translate-y-[4px] -rotate-45" : ""
-                  }`}
-                />
-              </span>
             </button>
           </div>
         </div>
