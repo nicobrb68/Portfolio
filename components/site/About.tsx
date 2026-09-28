@@ -53,7 +53,7 @@ export default function About() {
               </p>
               <p className="text-sm sm:text-base leading-relaxed text-ink/80">
                 Étudiant en tête de promotion à <strong className="text-ink font-semibold">l&apos;École 42 Mulhouse</strong>, 
-                je combine la rigueur de la micromécanique suisse, l&apos;autonomie d&apos;une expatriation d&apos;un an en Australie 
+                je combine la rigueur de l&apos;horlogerie suisse, l&apos;autonomie d&apos;une expatriation d&apos;un an en Australie 
                 et la robustesse de l&apos;ingénierie système 42.
               </p>
               <p className="text-sm sm:text-base leading-relaxed text-ink/80">

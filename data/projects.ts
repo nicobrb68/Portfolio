@@ -61,7 +61,7 @@ export const experiences: Experience[] = [
     title: "Formation Expert en Architecture Informatique",
     place: "42 Mulhouse · RNCP 7 / Master Bac+5",
     description:
-      "Formation d'ingénierie intensive basée sur la pratique, le peer-learning et la résolution de problématiques complexes sans cours magistraux.",
+      "Formation d'informatique intensive basée sur la pratique, le peer-learning et la résolution de problématiques complexes sans cours magistraux.",
     highlights: [
       "Systèmes & Virtualisation : Installation et durcissement d'environnements Linux (Debian) sous machine virtuelle.",
       "Conteneurisation & Déploiement : Conception et orchestration de microservices isolés avec Docker & Docker Compose.",
